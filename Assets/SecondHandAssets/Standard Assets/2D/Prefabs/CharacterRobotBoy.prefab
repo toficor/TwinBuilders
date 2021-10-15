@@ -43,9 +43,8 @@ GameObject:
   - component: {fileID: 9500000}
   - component: {fileID: 5800000}
   - component: {fileID: 5000000}
-  - component: {fileID: 11400002}
-  - component: {fileID: 11400000}
   - component: {fileID: 6100000}
+  - component: {fileID: 3090374714459585346}
   m_Layer: 0
   m_Name: CharacterRobotBoy
   m_TagString: Player
@@ -62,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.268, y: 8.9814, z: 0}
-  m_LocalScale: {x: 1.7715329, y: 1.7715304, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
   - {fileID: 400004}
@@ -83,6 +82,8 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -94,6 +95,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -173,37 +175,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d08f91df3bd212f429df17f53ce2f364, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MaxSpeed: 10
-  m_JumpForce: 800
-  m_CrouchSpeed: 0.25
-  m_AirControl: 1
-  m_WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d7b34a3bb2d4e4b926e7e729d3d410, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &6100000
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -230,6 +201,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.68}
   m_EdgeRadius: 0
+--- !u!114 &3090374714459585346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83afdb37716e45248b3ed47dc9f01020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerControllerData: {fileID: 11400000, guid: 33b991d58e591a44597283414b5ed4c4, type: 2}
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0
