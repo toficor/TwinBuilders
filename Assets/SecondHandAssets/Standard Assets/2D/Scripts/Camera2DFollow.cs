@@ -10,6 +10,7 @@ namespace UnityStandardAssets._2D
         public float lookAheadFactor = 3;
         public float lookAheadReturnSpeed = 0.5f;
         public float lookAheadMoveThreshold = 0.1f;
+        public Vector3 minPosition;
 
         public bool freezXAxis = false;
 
@@ -50,6 +51,7 @@ namespace UnityStandardAssets._2D
             {
                 aheadTargetPos = new Vector3(transform.position.x, aheadTargetPos.y, aheadTargetPos.z);
             }
+            
 
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
 

@@ -20,6 +20,11 @@ public class PlayerController : MonoBehaviour
         _playerMotor.MotorUpdate();
     }
 
+    private void FixedUpdate()
+    {
+        _playerMotor.MotorFixedUpdate();
+    }
+
     private void Init()
     {
         _playerInput = new PlayerInput(_playerControllerData);

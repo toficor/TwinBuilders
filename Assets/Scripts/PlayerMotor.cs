@@ -33,13 +33,19 @@ public class PlayerMotor
     }
 
     public void MotorUpdate()
+    {  
+        Move(_playerInput.Horizontal, _playerInput.Jump);
+    }
+
+    public void MotorFixedUpdate()
     {
         GroundCheck();
-        Move(_playerInput.Horizontal, _playerInput.Jump);
     }
 
     private void GroundCheck()
     {
+
+        //TODO przerobic to na kurwa sprawdzanie raycastami
         _playerControllerData.Grounded = false;
 
         // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
@@ -52,6 +58,9 @@ public class PlayerMotor
                 _playerControllerData.Grounded = true;
             }               
         }
+
+        _playerAnimator.SetBool("Ground", _playerControllerData.Grounded);
+        _playerAnimator.SetFloat("vSpeed", _playerRigidbody2D.velocity.y);
     }
 
     private void Move(float move, bool jump, bool crouch = false)
@@ -94,6 +103,7 @@ public class PlayerMotor
                 Flip();
             }
         }
+
         if (_playerControllerData.Grounded && jump && _playerAnimator.GetBool("Ground"))
         {
             _playerControllerData.Grounded = false;
