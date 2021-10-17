@@ -18,9 +18,9 @@ MonoBehaviour:
   FacingRight: 0
   Grounded: 0
   MaxSpeed: 10
-  JumpForce: 800
+  JumpForce: 200
   GroundedRadius: 0.2
   CrouchSpeed: 0.25
   WhatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
