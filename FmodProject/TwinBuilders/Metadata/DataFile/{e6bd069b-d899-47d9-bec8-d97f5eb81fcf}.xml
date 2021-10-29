@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{e6bd069b-d899-47d9-bec8-d97f5eb81fcf}">
+		<property name="assetPath">
+			<value>SFX/open_backpack/open_backpack_1.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bb8441ed-7e83-4696-8446-745861c8a798}</destination>
+		</relationship>
+	</object>
+</objects>

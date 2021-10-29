@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{8454a921-31f2-4b2e-a10f-de03e6142a15}">
+		<property name="assetPath">
+			<value>SFX/metal_footstep/metal_footstep_3.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bb8441ed-7e83-4696-8446-745861c8a798}</destination>
+		</relationship>
+	</object>
+</objects>

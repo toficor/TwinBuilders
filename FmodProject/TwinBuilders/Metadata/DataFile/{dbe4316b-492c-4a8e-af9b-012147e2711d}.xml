@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{dbe4316b-492c-4a8e-af9b-012147e2711d}">
+		<property name="assetPath">
+			<value>SFX/setting_building_piece/setting_building_piece_wood_3.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bb8441ed-7e83-4696-8446-745861c8a798}</destination>
+		</relationship>
+	</object>
+</objects>
