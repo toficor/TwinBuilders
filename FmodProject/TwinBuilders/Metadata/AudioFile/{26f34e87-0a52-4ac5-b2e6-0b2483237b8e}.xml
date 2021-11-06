@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{26f34e87-0a52-4ac5-b2e6-0b2483237b8e}">
+		<property name="assetPath">
+			<value>Music/LOOP LVL2.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>109.71428571428571</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{93c6d09d-3a77-4e5b-af96-59494913b158}</destination>
+		</relationship>
+	</object>
+</objects>

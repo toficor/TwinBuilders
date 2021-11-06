@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{0739e020-b6ae-4211-ad61-6bb7fad6f196}">
+		<property name="assetPath">
+			<value>SFX/use_gearbox/use_gearbox_1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.1250113378684807</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{93c6d09d-3a77-4e5b-af96-59494913b158}</destination>
+		</relationship>
+	</object>
+</objects>
