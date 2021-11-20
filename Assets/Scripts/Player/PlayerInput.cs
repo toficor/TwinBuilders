@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
-
+using System;
 public class PlayerInput
 {
     private Player _player;
