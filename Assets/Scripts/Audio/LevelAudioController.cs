@@ -1,18 +1,15 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelAudioController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [EventRef]
+    public string BacgroundAudio = "";
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        RuntimeManager.PlayOneShot(BacgroundAudio);
     }
 }
