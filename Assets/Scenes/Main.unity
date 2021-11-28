@@ -1604,6 +1604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathZoneController
       objectReference: {fileID: 0}
+    - target: {fileID: 7371657484066357975, guid: c26e8ea23b685f54fb58bd1ba1602318, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7371657484066357993, guid: c26e8ea23b685f54fb58bd1ba1602318, type: 3}
       propertyPath: m_RootOrder
       value: 3
