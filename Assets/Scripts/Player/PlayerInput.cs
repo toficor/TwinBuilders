@@ -52,4 +52,16 @@ public class PlayerInput
         }
     }
 
+    public bool ToggleBuildMode
+    {
+        get
+        {
+            if(_player != null)
+            {
+                return _player.GetButton("ToggleBuildingMode");
+            }
+            return false;
+        }
+    }
+
 }

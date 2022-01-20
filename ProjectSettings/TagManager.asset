@@ -16,7 +16,7 @@ TagManager:
   - FirstPlayerBuilding
   - SecondPlayerBuilding
   - Ground
-  - 
+  - PlayerOneBackground
   - 
   - 
   - 
@@ -42,4 +42,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Niewiem
+    uniqueID: 1940313251
     locked: 0

@@ -12,12 +12,12 @@ public class PlayerController : MonoBehaviour
     private PlayerMotor _playerMotor;
     private PlayerBuildingController _playerBuildingController;
     private PlayerAudioController _playerAudioController;
-    private BoxCollider2D _playerBoxCollider;
+    private Collider2D _playerCollider;
 
     private void Awake()
     {
         Init();
-        _playerBoxCollider = GetComponent<BoxCollider2D>();
+        _playerCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private void GroundCheck()
     {
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(_playerBoxCollider.bounds.center, -_playerBoxCollider.transform.up, _playerBoxCollider.bounds.extents.y + 0.02f, _groundLayers);
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(_playerCollider.bounds.center, -_playerCollider.transform.up, _playerCollider.bounds.extents.y + 0.02f, _groundLayers);
         _playerControllerData.Grounded = raycastHit2D.collider != null;
     }
     private void OnEnable()
