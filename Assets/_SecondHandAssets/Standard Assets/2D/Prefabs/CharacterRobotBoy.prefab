@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3090374714459585346}
   - component: {fileID: 6207919962371317455}
   - component: {fileID: 233478289653013648}
+  - component: {fileID: 6809669357842017514}
   m_Layer: 0
   m_Name: CharacterRobotBoy
   m_TagString: Player
@@ -61,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.268, y: 8.9814, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
   - {fileID: 400004}
@@ -87,7 +88,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1053ca8ee86e0774c852d9d1ded6bdca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,7 +109,7 @@ SpriteRenderer:
   m_SortingLayerID: 1940313251
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a70b3fff8c0d54e41b799a19a9a33a3f, type: 3}
+  m_Sprite: {fileID: -2878776438291150895, guid: 337795adeb6c31a4dbd70886651b943d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -204,9 +205,58 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06, y: 0}
+  m_Offset: {x: 0.09, y: 0}
   m_Size: {x: 0.16, y: 0.3}
   m_Direction: 0
+--- !u!114 &6809669357842017514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000a3d4a673
+  m_ShapePath:
+  - {x: 0.0036809444, y: -0.047683716, z: 0}
+  - {x: -0.03273201, y: -0.09188223, z: 0}
+  - {x: 0.014572859, y: -0.1637857, z: 0}
+  - {x: 0.056201458, y: -0.15243244, z: 0}
+  - {x: 0.03160286, y: -0.099451065, z: 0}
+  - {x: 0.084584236, y: -0.080528975, z: 0}
+  - {x: 0.13567352, y: -0.15243268, z: 0}
+  - {x: 0.195, y: -0.165, z: 0}
+  - {x: 0.09593749, y: -0.021870852, z: 0}
+  - {x: 0.18676305, y: 0.08409214, z: 0}
+  - {x: 0.20067644, y: 0.17067647, z: 0}
+  - {x: 0.1489191, y: 0.17113328, z: 0}
+  - {x: 0.15270352, y: 0.08976865, z: 0}
+  - {x: 0.11864376, y: 0.093553066, z: 0}
+  - {x: 0.11296725, y: 0.14464259, z: 0}
+  - {x: 0.05430913, y: 0.14275026, z: 0}
+  - {x: 0.0524168, y: 0.11247516, z: 0}
+  - {x: -0.015702248, y: 0.118151665, z: 0}
+  - {x: -0.066791534, y: 0.13707376, z: 0}
+  - {x: -0.19689202, y: 0.15932345, z: 0}
+  - {x: -0.14247942, y: 0.10301423, z: 0}
+  - {x: -0.1935687, y: 0.08030772, z: 0}
+  - {x: -0.064899206, y: 0.015972853, z: 0}
+  - {x: 0.008896589, y: 0.023541927, z: 0}
+  - {x: -0.028947592, y: -0.016194344, z: 0}
+  - {x: -0.1954608, y: -0.02376318, z: 0}
+  - {x: -0.1878922, y: -0.06349921, z: 0}
+  m_ShapePathHash: 1221552575
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -120040
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0
