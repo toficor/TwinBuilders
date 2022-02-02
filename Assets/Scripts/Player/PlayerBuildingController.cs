@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerBuildingController : BaseController
 {
-
     private PlayerEquipmentController _playerEquipmentController;
     private PlayerInput _playerInput;
 
@@ -29,8 +28,13 @@ public class PlayerBuildingController : BaseController
        // throw new System.NotImplementedException();
     }
 
-    public override void Init()
+    public override BaseController Init()
     {
-       // throw new System.NotImplementedException();
+        return this;
+    }
+
+    protected override void OnUpdate()
+    {
+       // core loop of controller;
     }
 }

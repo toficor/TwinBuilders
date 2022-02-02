@@ -18,13 +18,18 @@ public class PlayerEquipmentController : BaseController
         return _playerEquipmentData.PlaceableObjectDatas[index];
     }
 
-    public override void Init()
+    public override BaseController Init()
     {
-        throw new System.NotImplementedException();
+        return this;
     }
 
     public override void DeInit()
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    protected override void OnUpdate()
+    {
+        //core loop of controller 
     }
 }

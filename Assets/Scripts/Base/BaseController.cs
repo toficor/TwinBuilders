@@ -8,13 +8,21 @@ public abstract class BaseController
 
     public bool IsActive => _isActive;
 
-    public abstract void Init();
+    public abstract BaseController Init();
     public abstract void DeInit();
     public virtual void Activate()
     {
         _isActive = true;
     }
+    public void Update()
+    {
+        if (_isActive)
+        {
+            OnUpdate();
+        }
+    }
 
+    protected abstract void OnUpdate();
     public virtual void DeActivate()
     {
         _isActive = false;
