@@ -32,4 +32,9 @@ public class PlayerEquipmentController : BaseController
     {
         //core loop of controller 
     }
+
+    protected override void OnFixedUpdate()
+    {
+        
+    }
 }

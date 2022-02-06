@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerMotor
+public class PlayerMotorController : BaseController
 {
     public Action OnJump = delegate { };
 
@@ -20,7 +20,7 @@ public class PlayerMotor
     private PlayerInput _playerInput;
 
 
-    public PlayerMotor(Animator anim, Rigidbody2D rigidbody2D, PlayerControllerData playerControllerData, PlayerInput playerInput, GameObject playerGameObject)
+    public PlayerMotorController(Animator anim, Rigidbody2D rigidbody2D, PlayerControllerData playerControllerData, PlayerInput playerInput, GameObject playerGameObject)
     {
         _playerAnimator = anim;
         _airControl = playerControllerData.AirControl;
@@ -34,16 +34,7 @@ public class PlayerMotor
         _playerInput = playerInput;
     }
 
-    public void MotorUpdate()
-    {
-       
-    }
-
-    public void MotorFixedUpdate()
-    {
-        Move(_playerInput.Horizontal, _playerInput.Jump);
-    }  
-
+ 
     private void Move(float move, bool jump, bool crouch = false)
     {
         // Set whether or not the character is crouching in the animator
@@ -93,5 +84,25 @@ public class PlayerMotor
         Vector3 theScale = _playerGameObject.transform.localScale;
         theScale.x *= -1;
         _playerGameObject.transform.localScale = theScale;
+    }
+
+    public override BaseController Init()
+    {
+        return this;
+    }
+
+    public override void DeInit()
+    {
+        
+    }
+
+    protected override void OnUpdate()
+    {
+        
+    }
+
+    protected override void OnFixedUpdate()
+    {
+        Move(_playerInput.Horizontal, _playerInput.Jump);
     }
 }

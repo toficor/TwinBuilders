@@ -7,3 +7,5 @@ public class PlayerEquipmentData : ScriptableObject
 {
     public List<PlaceableObjectData> PlaceableObjectDatas = new List<PlaceableObjectData>();
 }
+
+

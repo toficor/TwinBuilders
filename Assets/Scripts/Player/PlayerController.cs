@@ -5,14 +5,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerControllerData _playerControllerData;
+    [SerializeField] private PlayerEquipmentData _playerEquipmentData;
     [SerializeField] private Transform _groundCheckTransform;
     [SerializeField] private LayerMask _groundLayers;
 
     private PlayerInput _playerInput;
-    private PlayerMotor _playerMotor;
+    private PlayerMotorController _playerMotorController;
     private PlayerBuildingController _playerBuildingController;
     private PlayerAudioController _playerAudioController;
+    private PlayerEquipmentController _playerEquipmentController;
     private Collider2D _playerCollider;
+
+    private List<BaseController> _playersBaseControllers = new List<BaseController>();
 
     private void Awake()
     {
@@ -22,21 +26,31 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        _playerMotor.MotorUpdate();
+        _playersBaseControllers.ForEach(x => x.Update());
         GroundCheck();
     }
 
     private void FixedUpdate()
     {
-        _playerMotor.MotorFixedUpdate();
+        _playersBaseControllers.ForEach(x => x.FixedUpdate());
     }
 
     private void Init()
     {
         _playerInput = new PlayerInput(_playerControllerData);
-        _playerMotor = new PlayerMotor(GetComponent<Animator>(), GetComponent<Rigidbody2D>(), _playerControllerData, _playerInput, gameObject);
+        _playerMotorController = new PlayerMotorController(GetComponent<Animator>(), GetComponent<Rigidbody2D>(), _playerControllerData, _playerInput, gameObject);
+        _playerEquipmentController = new PlayerEquipmentController(_playerInput, _playerEquipmentData);
+        _playerBuildingController = new PlayerBuildingController(_playerInput, _playerEquipmentController);
         _playerAudioController = GetComponent<PlayerAudioController>();
-        _playerAudioController.Init(_playerMotor);
+
+        _playerAudioController.Init(_playerMotorController);
+        _playerMotorController.Init();
+        _playerBuildingController.Init();
+        _playerEquipmentController.Init();       
+
+        _playersBaseControllers.Add(_playerMotorController);
+        _playersBaseControllers.Add(_playerBuildingController);
+        _playersBaseControllers.Add(_playerEquipmentController);
     }
 
     private void GroundCheck()
@@ -46,7 +60,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     {
-
+        _playerMotorController.Activate();
     }
     private void OnDisable()
     {

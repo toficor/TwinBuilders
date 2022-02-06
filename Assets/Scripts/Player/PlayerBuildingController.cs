@@ -33,6 +33,11 @@ public class PlayerBuildingController : BaseController
         return this;
     }
 
+    protected override void OnFixedUpdate()
+    {
+        
+    }
+
     protected override void OnUpdate()
     {
        // core loop of controller;

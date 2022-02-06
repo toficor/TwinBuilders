@@ -13,9 +13,9 @@ public class PlayerAudioController : MonoBehaviour
     [EventRef]
     public string JumpingExhaleEvent = "";
 
-    private PlayerMotor _playerMotor;
+    private PlayerMotorController _playerMotor;
 
-    public void Init(PlayerMotor playerMotor)
+    public void Init(PlayerMotorController playerMotor)
     {
         _playerMotor = playerMotor;
 

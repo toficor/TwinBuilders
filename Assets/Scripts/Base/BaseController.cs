@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: I've made IBaseController interface - figure out if it's necessaryowo 
 public abstract class BaseController
 {
     protected bool _isActive;
@@ -22,7 +23,17 @@ public abstract class BaseController
         }
     }
 
+    public void FixedUpdate()
+    {
+        if (_isActive)
+        {
+           OnFixedUpdate();
+        }
+    }
+
     protected abstract void OnUpdate();
+
+    protected abstract void OnFixedUpdate();
     public virtual void DeActivate()
     {
         _isActive = false;
