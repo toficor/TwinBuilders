@@ -8,6 +8,8 @@ public class PlayerInput
     private Player _player;
     private PlayerControllerData _playerControllerData;
 
+    public Action<bool> OnPlayerToggleBuildingMode = delegate (bool buildingModeOn) { };
+
     public PlayerInput(PlayerControllerData playerControllerData)
     {
         _playerControllerData = playerControllerData;
@@ -18,7 +20,7 @@ public class PlayerInput
     {
         get
         {
-            if(_player != null)
+            if (_player != null)
             {
                 return _player.GetAxis("Horizontal");
             }
@@ -31,9 +33,9 @@ public class PlayerInput
     {
         get
         {
-            if(_player != null)
+            if (_player != null)
             {
-               return _player.GetButton("Jump");
+                return _player.GetButton("Jump");
             }
 
             return false;
@@ -42,9 +44,9 @@ public class PlayerInput
 
     public bool Build
     {
-        get 
+        get
         {
-            if(_player != null)
+            if (_player != null)
             {
                 return _player.GetButton("Build");
             }
@@ -56,7 +58,7 @@ public class PlayerInput
     {
         get
         {
-            if(_player != null)
+            if (_player != null)
             {
                 return _player.GetButton("ToggleBuildingMode");
             }

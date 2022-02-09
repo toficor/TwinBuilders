@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e210bd4a98f6a4da70e1ce3988cfaf, type: 3}
   m_Name: FirstPlayerEquipmentData
   m_EditorClassIdentifier: 
-  PlaceableObjectDatas: []
+  PlaceableObjectDatas:
+  - {fileID: 0}

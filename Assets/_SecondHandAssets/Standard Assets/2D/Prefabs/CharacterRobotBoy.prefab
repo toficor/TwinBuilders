@@ -114,7 +114,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.39, y: 0.33}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerControllerData: {fileID: 11400000, guid: 33b991d58e591a44597283414b5ed4c4, type: 2}
+  _playerEquipmentData: {fileID: 0}
   _groundCheckTransform: {fileID: 400000}
   _groundLayers:
     serializedVersion: 2

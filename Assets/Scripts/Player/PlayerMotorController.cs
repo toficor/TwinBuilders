@@ -75,6 +75,7 @@ public class PlayerMotorController : BaseController
 
         _playerAnimator.SetBool("Ground", _playerControllerData.Grounded);
         _playerAnimator.SetFloat("vSpeed", _playerRigidbody2D.velocity.y);
+        Debug.LogError(_playerRigidbody2D.velocity.y);
     }
 
     private void Flip()
