@@ -13,13 +13,13 @@ TagManager:
   - 
   - Water
   - UI
-  - FirstPlayerBuilding
-  - SecondPlayerBuilding
+  - 
+  - Wall
   - Ground
   - PlayerOneBackground
   - 
-  - 
-  - 
+  - FirstPlayer
+  - SecondPlayer
   - 
   - 
   - 

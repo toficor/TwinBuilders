@@ -19,8 +19,8 @@ public class PlayerAudioController : MonoBehaviour
     {
         _playerMotor = playerMotor;
 
-        playerMotor.OnJump += PlayJumpEvent;
-        playerMotor.OnJump += PlayJumpExhaleEvent;
+       // playerMotor.OnJump += PlayJumpEvent;
+       // playerMotor.OnJump += PlayJumpExhaleEvent;
     }
 
     public void PlayFootstepsEvent()
