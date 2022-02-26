@@ -9,7 +9,7 @@ public class PlayerBuildingControllerData : ScriptableObject
     public float BuildingEnableDistance => _buildingEnableDistance;
 
     [SerializeField] private float _buildingEnableTimer = 1f;
-    public float BuildingEnableTimer => _buildingEnableTimer;
+    public float WaitingForBuildingTimer => _buildingEnableTimer;
 
     [SerializeField] private LayerMask _cOPlayerLayerMask;
 

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerEquipmentData _playerEquipmentData;
     [SerializeField] private PlayerMovementData _playerMovementData;
     [SerializeField] private PlayerBuildingControllerData _playerBuildingControllerData;
+    [SerializeField] private bool _imFirstPlayer;
 
     private PlayerInput _playerInput;
     private PlayerMotorController _playerMotorController;
@@ -18,6 +19,9 @@ public class PlayerController : MonoBehaviour
 
     private List<BaseController> _playersBaseControllers = new List<BaseController>();
 
+    public PlayerBuildingController PlayerBuildingController => _playerBuildingController;
+    public bool ImFirstPlayer => _imFirstPlayer;
+
     private void Awake()
     {
         Init();
@@ -27,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _playersBaseControllers.ForEach(x => x.Update());
-        if (_playerBuildingController.InBuildingMode)
+        if (_playerBuildingController.InBuildingMode || _playerBuildingController.WaitingForSecondPlayer)
         {
             _playerMotorController.DisableMove();
         }
@@ -45,9 +49,9 @@ public class PlayerController : MonoBehaviour
     private void Init()
     {
         _playerInput = new PlayerInput(_playerControllerData);
-        _playerMotorController = new PlayerMotorController(GetComponent<Rigidbody2D>(), _playerMovementData, _playerInput, this);
-        _playerEquipmentController = new PlayerEquipmentController(_playerInput, _playerEquipmentData);
-        _playerBuildingController = new PlayerBuildingController(_playerInput, _playerEquipmentController, _playerBuildingControllerData, _playerMotorController, this.transform);
+        _playerMotorController = new PlayerMotorController(GetComponent<Rigidbody2D>(), _playerMovementData, _playerInput, this, this);
+        _playerEquipmentController = new PlayerEquipmentController(_playerInput, _playerEquipmentData, this);
+        _playerBuildingController = new PlayerBuildingController(_playerInput, _playerEquipmentController, _playerBuildingControllerData, _playerMotorController, this.transform, this);
         _playerAudioController = GetComponent<PlayerAudioController>();
 
         _playerAudioController?.Init(_playerMotorController);

@@ -6,8 +6,15 @@ using UnityEngine;
 public abstract class BaseController
 {
     protected bool _isActive;
+    private PlayerController _playerController;
 
     public bool IsActive => _isActive;
+    protected PlayerController PlayerController => _playerController;
+
+    protected BaseController(PlayerController playerController)
+    {
+        _playerController = playerController;
+    }
 
     public abstract BaseController Init();
     public abstract void DeInit();
@@ -27,7 +34,7 @@ public abstract class BaseController
     {
         if (_isActive)
         {
-           OnFixedUpdate();
+            OnFixedUpdate();
         }
     }
 

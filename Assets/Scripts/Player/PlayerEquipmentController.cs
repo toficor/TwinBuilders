@@ -7,7 +7,9 @@ public class PlayerEquipmentController : BaseController
     private PlayerEquipmentData _playerEquipmentData;
     private PlayerInput _playerInput;
 
-    public PlayerEquipmentController(PlayerInput playerInput, PlayerEquipmentData playerEquipmentData)
+    public PlayerEquipmentController(PlayerInput playerInput,
+                                     PlayerEquipmentData playerEquipmentData,
+                                     PlayerController playerController) : base(playerController)
     {
         _playerInput = playerInput;
         _playerEquipmentData = playerEquipmentData;
@@ -25,7 +27,7 @@ public class PlayerEquipmentController : BaseController
 
     public override void DeInit()
     {
-        
+
     }
 
     protected override void OnUpdate()
@@ -35,6 +37,6 @@ public class PlayerEquipmentController : BaseController
 
     protected override void OnFixedUpdate()
     {
-        
+
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FirstPlayerBuildingControllerData
   m_EditorClassIdentifier: 
   _buildingEnableDistance: 2
-  _buildingEnableTimer: 1
+  _buildingEnableTimer: 5
   _cOPlayerLayerMask:
     serializedVersion: 2
     m_Bits: 4096

@@ -40,7 +40,11 @@ public class PlayerMotorController : BaseController
     public bool OnGround => _onGround;
     public bool CanMove => _canMove;
 
-    public PlayerMotorController(Rigidbody2D rigidbody, PlayerMovementData playerMovementData, PlayerInput playerInput, MonoBehaviour monoBehaviour)
+    public PlayerMotorController(Rigidbody2D rigidbody,
+                                 PlayerMovementData playerMovementData,
+                                 PlayerInput playerInput,
+                                 MonoBehaviour monoBehaviour,
+                                 PlayerController playerController) : base(playerController)
     {
         _rb = rigidbody;
         _playerMovementData = playerMovementData;
