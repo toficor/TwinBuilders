@@ -24,10 +24,10 @@ MonoBehaviour:
   _hangTime: 0.1
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 64
   WallLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 8
   _groundRaycastLength: 1.11
   _groundVectorsOffset: {x: 0.5, y: 0, z: 0}
   _topRaycastLength: 1.09

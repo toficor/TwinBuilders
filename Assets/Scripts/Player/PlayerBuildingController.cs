@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class PlayerBuildingController : BaseController
 {
     private PlayerEquipmentController _playerEquipmentController;
@@ -11,6 +11,7 @@ public class PlayerBuildingController : BaseController
     private PlayerMotorController _playerMotorController;
 
     private float _currentWaitingForBuildingTimer = 0f;
+    private float _changingShapeTimer = 0f;
     private PlayerController _cOOPlayerReference;
 
     private bool _inBuildingMode = false;
@@ -22,17 +23,27 @@ public class PlayerBuildingController : BaseController
     public bool CanEnterBuildingMode => _canEnterBuildingMode;
     public bool WaitingForSecondPlayer => _waitingForSecondPlayer;
 
+    public Action<PlayerShapeData> OnPlayerChangeShape = delegate (PlayerShapeData newPlayerShape) { };
 
+    public bool InBuildingMode
+    {
+        get
+        {
+            return _inBuildingMode;
+        }
 
-    public bool InBuildingMode => _inBuildingMode;
+        set
+        {
+            _inBuildingMode = value;
+        }
+    }
 
-    //TODO: mozna zrobic transform reference publiczne w player controller i wtedy kazdy konstruktor baseController w base bedzie potrzebowal do niego referencji
     public PlayerBuildingController(PlayerInput playerInput,
                                     PlayerEquipmentController playerEquipmentController,
                                     PlayerBuildingControllerData playerBuildingControllerData,
                                     PlayerMotorController playerMotorController,
                                     Transform playerTransform,
-                                    PlayerController playerController): base (playerController)
+                                    PlayerController playerController) : base(playerController)
     {
         _playerInput = playerInput;
         _playerEquipmentController = playerEquipmentController;
@@ -73,25 +84,41 @@ public class PlayerBuildingController : BaseController
 
         // Debug.LogError(_playerTransform.gameObject.name + "IsSecondPlayerNear: " + IsSecondPlayerNear());
 
-        if (_playerInput.Build)
+        if (!_inBuildingMode)
         {
-            if (_canEnterBuildingMode)
+            //this should be moved to something like PlayerStateController class
+            if (_playerInput.Build)
             {
-               // Debug.LogError("Buduje");
-                _cOOPlayerReference.PlayerBuildingController._inBuildingMode = true;
-                _inBuildingMode = true;
+                if (_canEnterBuildingMode)
+                {
+                    Debug.LogWarning(PlayerController.gameObject.name + " Buduje");
+                    _cOOPlayerReference.PlayerBuildingController._inBuildingMode = true;
+                    _inBuildingMode = true;
+                }
+                else if (_canEnterWaitingForBuilding)
+                {
+                    Debug.LogWarning(PlayerController.gameObject.name + " Czekam");
+                    _waitingForSecondPlayer = true;
+                    _currentWaitingForBuildingTimer = _playerBuildingControllerData.WaitingForBuildingTimer;
+                }
             }
-            else if (_canEnterWaitingForBuilding)
+
+        }
+        else
+        {
+            if (PlayerController.ImFirstPlayer)
             {
-               // Debug.LogError("Czekam");
-                _waitingForSecondPlayer = true;
-                _currentWaitingForBuildingTimer = _playerBuildingControllerData.WaitingForBuildingTimer;
+                SteeringPlayerBehaviour();
+            }
+            else
+            {
+                BuildingPlayerBehaviour();
             }
         }
 
         if (_currentWaitingForBuildingTimer <= 0f && _waitingForSecondPlayer && !_inBuildingMode)
         {
-          //  Debug.LogError("juz nie czekam");
+            Debug.LogWarning(PlayerController.gameObject.name + " juz nie czekam");
             _waitingForSecondPlayer = false;
         }
         //if (_canEnterBuildingMode && !_inBuildingMode)
@@ -100,6 +127,8 @@ public class PlayerBuildingController : BaseController
         //    _inBuildingMode = true;
         //}
 
+
+
         float v = _currentWaitingForBuildingTimer -= Time.deltaTime;
         _currentWaitingForBuildingTimer = Mathf.Clamp(v, 0, Mathf.Infinity);
     }
@@ -107,6 +136,54 @@ public class PlayerBuildingController : BaseController
     private bool IsSecondPlayerNear()
     {
         return Physics2D.Raycast(_playerTransform.position, Vector2.left, _playerBuildingControllerData.BuildingEnableDistance, _playerBuildingControllerData.COOPlayerLayerMask) || Physics2D.Raycast(_playerTransform.position, Vector2.right, _playerBuildingControllerData.BuildingEnableDistance, _playerBuildingControllerData.COOPlayerLayerMask);
+    }
+
+    private void SteeringPlayerBehaviour()
+    {
+        //35 for debug 
+        _cOOPlayerReference.PlayerMotorController.MoveCharacter(new Vector2(_playerInput.Horizontal * 35f, _playerInput.Vertical * 35f));
+
+
+    }
+
+    int _index = 0;
+    bool _abbleToReturn = false;
+    private void BuildingPlayerBehaviour()
+    {
+        PlayerController.PlayerRigidbody.gravityScale = 0f;
+        PlayerController.PlayerRigidbody.drag = 0f;
+
+        _changingShapeTimer += Time.deltaTime;
+
+        if (_playerInput.Horizontal > 0 || _playerInput.Horizontal < 0)
+        {
+            if (_changingShapeTimer >= _playerBuildingControllerData.TimeBetweenChangingShapes)
+            {
+                _index = Mathf.Clamp(_index += Math.Sign(_playerInput.Horizontal), 0, _playerEquipmentController.GetPlayerShapesCount() - 1);
+                OnPlayerChangeShape(_playerEquipmentController.GetPlayerShapeData(_index));
+                _changingShapeTimer = 0f;
+            }
+        }
+
+        //jump unless player state controller done
+        if (_playerInput.Jump)
+        {
+            _playerMotorController.FreezConstrains();
+            _cOOPlayerReference.PlayerBuildingController.InBuildingMode = false;
+            _abbleToReturn = true;
+        }
+
+        if (_playerInput.Build && _abbleToReturn)
+        {
+            OnPlayerChangeShape(_playerEquipmentController.GetPlayerDefaultShapeData());
+            PlayerController.transform.position = _cOOPlayerReference.GetNearestAvailablePosition();
+            _playerMotorController.UnFreezConstrains();
+            _inBuildingMode = false;
+            PlayerController.PlayerRigidbody.gravityScale = 8f;
+            PlayerController.PlayerRigidbody.drag = 10f;
+        }
+
+
     }
 
 }

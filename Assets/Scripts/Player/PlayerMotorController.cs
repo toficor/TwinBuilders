@@ -70,7 +70,8 @@ public class PlayerMotorController : BaseController
         CheckCollisions();
         if (_canMove)
         {
-            MoveCharacter();
+            Vector2 forceVector = new Vector2(_horizontalDirection, 0f) * _playerMovementData.MovementAccelaration;
+            MoveCharacter(forceVector);
         }
         else
         {
@@ -156,13 +157,23 @@ public class PlayerMotorController : BaseController
     {
         return new Vector2(_playerInput.Horizontal, 0f);
     }
-    private void MoveCharacter()
+    public void MoveCharacter(Vector2 forceVector)
     {
-        _rb.AddForce(new Vector2(_horizontalDirection, 0f) * _playerMovementData.MovementAccelaration);
+        _rb.AddForce(forceVector);
         if (Mathf.Abs(_rb.velocity.x) > _playerMovementData.MaxMoveSpeed)
         {
             _rb.velocity = new Vector2(Mathf.Sign(_rb.velocity.x) * _playerMovementData.MaxMoveSpeed, _rb.velocity.y);
         }
+    }
+
+    public void FreezConstrains()
+    {
+        _rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    public void UnFreezConstrains()
+    {
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     private void ApplyGroundLinearDrag()
@@ -214,7 +225,6 @@ public class PlayerMotorController : BaseController
             _hangTimeTimer = 0f;
         }
 
-        // Debug.LogError("skacze");
         _rb.velocity = new Vector2(_rb.velocity.x, 0f);
         _rb.AddForce(direction * _playerMovementData.JumpForce, ForceMode2D.Impulse);
         _isJumping = true;

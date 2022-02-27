@@ -12,6 +12,8 @@ public class PlayerBuildingControllerData : ScriptableObject
     public float WaitingForBuildingTimer => _buildingEnableTimer;
 
     [SerializeField] private LayerMask _cOPlayerLayerMask;
-
     public LayerMask COOPlayerLayerMask => _cOPlayerLayerMask;
+
+    [SerializeField] private float _timeBetweenChangingShapes = 0.6f;
+    public float TimeBetweenChangingShapes => _timeBetweenChangingShapes;
 }

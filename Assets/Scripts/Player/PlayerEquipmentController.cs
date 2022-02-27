@@ -15,9 +15,34 @@ public class PlayerEquipmentController : BaseController
         _playerEquipmentData = playerEquipmentData;
     }
 
-    public PlaceableObjectData GetPlaceableItem(int index)
+    //public PlaceableObjectData GetPlaceableItem(int index)
+    //{
+    //    return _playerEquipmentData.PlaceableObjectDatas[index];
+    //}
+
+    public Sprite GetShape(int index)
     {
-        return _playerEquipmentData.PlaceableObjectDatas[index];
+        return GetPlayerShapeData(index).Sprite;
+    }
+
+    public Sprite GetPlayerDefaultShapeSprite()
+    {
+        return GetPlayerDefaultShapeData().Sprite;
+    }
+
+    public PlayerShapeData GetPlayerShapeData(int index)
+    {
+        return _playerEquipmentData.TransformingPlayerShapes[index];
+    }
+    public PlayerShapeData GetPlayerDefaultShapeData()
+    {
+        return _playerEquipmentData.BasePlayerShape;
+    }
+
+
+    public int GetPlayerShapesCount()
+    {
+        return _playerEquipmentData.TransformingPlayerShapes.Capacity;
     }
 
     public override BaseController Init()

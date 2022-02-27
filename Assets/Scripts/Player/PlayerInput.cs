@@ -29,6 +29,19 @@ public class PlayerInput
         }
     }
 
+    public float Vertical
+    {
+        get
+        {
+            if (_player != null)
+            {
+                return _player.GetAxis("Vertical");
+            }
+
+            return 0f;
+        }
+    }
+
     public bool Jump
     {
         get

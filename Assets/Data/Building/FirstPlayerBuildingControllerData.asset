@@ -16,4 +16,5 @@ MonoBehaviour:
   _buildingEnableTimer: 5
   _cOPlayerLayerMask:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 256
+  _timeBetweenChangingShapes: 0.6
