@@ -703,6 +703,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rewired Input Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 575295563472259195, guid: dc68e03281c625643bbbe8e098efdb3b, type: 3}
+      propertyPath: _userData.actions.Array.data[3]._name
+      value: Action
+      objectReference: {fileID: 0}
+    - target: {fileID: 575295563472259195, guid: dc68e03281c625643bbbe8e098efdb3b, type: 3}
+      propertyPath: _userData.actions.Array.data[3]._descriptiveName
+      value: Action
+      objectReference: {fileID: 0}
     - target: {fileID: 575295563472259196, guid: dc68e03281c625643bbbe8e098efdb3b, type: 3}
       propertyPath: m_RootOrder
       value: 0

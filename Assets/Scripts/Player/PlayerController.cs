@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private PlayerAudioController _playerAudioController;
     private PlayerEquipmentController _playerEquipmentController;
     private PlayerStateController _playerStateController;
+    private PlayerController _cOOPlayerReference;
 
     private Collider2D _playerCollider;
     private Rigidbody2D _playerRigidbody;
@@ -30,8 +31,12 @@ public class PlayerController : MonoBehaviour
 
     public PlayerBuildingController PlayerBuildingController => _playerBuildingController;
     public PlayerMotorController PlayerMotorController => _playerMotorController;
+    public PlayerStateController PlayerStateController => _playerStateController;
     public Rigidbody2D PlayerRigidbody => _playerRigidbody;
     public bool ImFirstPlayer => _imFirstPlayer;
+    public PlayerBuildingControllerData PlayerBuildingControllerData  => _playerBuildingControllerData;
+    public PlayerController COOPlayerReference => _imFirstPlayer ? GameManager.Instance.SecondPlayerReference : GameManager.Instance.FirstPlayerReference;
+
 
     private void Awake()
     {
@@ -44,7 +49,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _playersBaseControllers.ForEach(x => x.Update());
-        if (_playerBuildingController.InBuildingMode || _playerBuildingController.WaitingForSecondPlayer)
+
+        //to przeniesc to player state controller
+        if (_playerStateController.InBuildingMode || _playerStateController.WaitingForSecondPlayer)
         {
             _playerMotorController.DisableMove();
         }
@@ -52,7 +59,6 @@ public class PlayerController : MonoBehaviour
         {
             _playerMotorController.EnableMove();
         }
-
         //  SpriteShapeTest();
     }
 

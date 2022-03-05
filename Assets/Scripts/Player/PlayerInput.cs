@@ -6,9 +6,7 @@ using System;
 public class PlayerInput
 {
     private Player _player;
-    private PlayerControllerData _playerControllerData;
-
-    public Action<bool> OnPlayerToggleBuildingMode = delegate (bool buildingModeOn) { };
+    private PlayerControllerData _playerControllerData;   
 
     public PlayerInput(PlayerControllerData playerControllerData)
     {
@@ -55,25 +53,37 @@ public class PlayerInput
         }
     }
 
-    public bool Build
+    public bool Action
     {
         get
         {
             if (_player != null)
             {
-                return _player.GetButton("Build");
+                return _player.GetButton("Action");
             }
             return false;
         }
     }
 
-    public bool ToggleBuildMode
+    public bool Cancel
     {
         get
         {
             if (_player != null)
             {
-                return _player.GetButton("ToggleBuildingMode");
+                return _player.GetButton("Cancel");
+            }
+            return false;
+        }
+    }
+
+    public bool Attack
+    {
+        get
+        {
+            if (_player != null)
+            {
+                return _player.GetButton("Attack");
             }
             return false;
         }

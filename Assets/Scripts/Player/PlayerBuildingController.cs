@@ -9,34 +9,11 @@ public class PlayerBuildingController : BaseController
     private Transform _playerTransform;
     private PlayerBuildingControllerData _playerBuildingControllerData;
     private PlayerMotorController _playerMotorController;
+    private PlayerStateController _playerStateController;
 
-    private float _currentWaitingForBuildingTimer = 0f;
     private float _changingShapeTimer = 0f;
-    private PlayerController _cOOPlayerReference;
-
-    private bool _inBuildingMode = false;
-    private bool _waitingForSecondPlayer = false;
-    private bool _canEnterBuildingMode => _playerMotorController.OnGround && IsSecondPlayerNear() && _cOOPlayerReference.PlayerBuildingController.WaitingForSecondPlayer;
-
-    private bool _canEnterWaitingForBuilding => _playerMotorController.OnGround && _currentWaitingForBuildingTimer <= 0f;
-
-    public bool CanEnterBuildingMode => _canEnterBuildingMode;
-    public bool WaitingForSecondPlayer => _waitingForSecondPlayer;
 
     public Action<PlayerShapeData> OnPlayerChangeShape = delegate (PlayerShapeData newPlayerShape) { };
-
-    public bool InBuildingMode
-    {
-        get
-        {
-            return _inBuildingMode;
-        }
-
-        set
-        {
-            _inBuildingMode = value;
-        }
-    }
 
     public PlayerBuildingController(PlayerInput playerInput,
                                     PlayerEquipmentController playerEquipmentController,
@@ -69,8 +46,6 @@ public class PlayerBuildingController : BaseController
 
     public override BaseController Init()
     {
-        _cOOPlayerReference = PlayerController.ImFirstPlayer ? GameManager.Instance.SecondPlayerReference : GameManager.Instance.FirstPlayerReference;
-        Debug.LogWarning("Me: " + PlayerController.gameObject.name + " my Coop: " + _cOOPlayerReference.gameObject.name);
         return this;
     }
 
@@ -81,69 +56,22 @@ public class PlayerBuildingController : BaseController
 
     protected override void OnUpdate()
     {
-
-        // Debug.LogError(_playerTransform.gameObject.name + "IsSecondPlayerNear: " + IsSecondPlayerNear());
-
-        if (!_inBuildingMode)
+        if (PlayerController.ImFirstPlayer)
         {
-            //this should be moved to something like PlayerStateController class
-            if (_playerInput.Build)
-            {
-                if (_canEnterBuildingMode)
-                {
-                    Debug.LogWarning(PlayerController.gameObject.name + " Buduje");
-                    _cOOPlayerReference.PlayerBuildingController._inBuildingMode = true;
-                    _inBuildingMode = true;
-                }
-                else if (_canEnterWaitingForBuilding)
-                {
-                    Debug.LogWarning(PlayerController.gameObject.name + " Czekam");
-                    _waitingForSecondPlayer = true;
-                    _currentWaitingForBuildingTimer = _playerBuildingControllerData.WaitingForBuildingTimer;
-                }
-            }
-
+            SteeringPlayerBehaviour();
         }
         else
         {
-            if (PlayerController.ImFirstPlayer)
-            {
-                SteeringPlayerBehaviour();
-            }
-            else
-            {
-                BuildingPlayerBehaviour();
-            }
+            BuildingPlayerBehaviour();
         }
-
-        if (_currentWaitingForBuildingTimer <= 0f && _waitingForSecondPlayer && !_inBuildingMode)
-        {
-            Debug.LogWarning(PlayerController.gameObject.name + " juz nie czekam");
-            _waitingForSecondPlayer = false;
-        }
-        //if (_canEnterBuildingMode && !_inBuildingMode)
-        //{
-        //    _currentEnableBuildingTimer = 0f;
-        //    _inBuildingMode = true;
-        //}
-
-
-
-        float v = _currentWaitingForBuildingTimer -= Time.deltaTime;
-        _currentWaitingForBuildingTimer = Mathf.Clamp(v, 0, Mathf.Infinity);
     }
 
-    private bool IsSecondPlayerNear()
-    {
-        return Physics2D.Raycast(_playerTransform.position, Vector2.left, _playerBuildingControllerData.BuildingEnableDistance, _playerBuildingControllerData.COOPlayerLayerMask) || Physics2D.Raycast(_playerTransform.position, Vector2.right, _playerBuildingControllerData.BuildingEnableDistance, _playerBuildingControllerData.COOPlayerLayerMask);
-    }
+
 
     private void SteeringPlayerBehaviour()
     {
         //35 for debug 
-        _cOOPlayerReference.PlayerMotorController.MoveCharacter(new Vector2(_playerInput.Horizontal * 35f, _playerInput.Vertical * 35f));
-
-
+        PlayerController.COOPlayerReference.PlayerMotorController.MoveCharacter(new Vector2(_playerInput.Horizontal * 35f, _playerInput.Vertical * 35f));
     }
 
     int _index = 0;
@@ -169,16 +97,16 @@ public class PlayerBuildingController : BaseController
         if (_playerInput.Jump)
         {
             _playerMotorController.FreezConstrains();
-            _cOOPlayerReference.PlayerBuildingController.InBuildingMode = false;
+            PlayerController.COOPlayerReference.PlayerStateController.InBuildingMode = false;
             _abbleToReturn = true;
         }
 
-        if (_playerInput.Build && _abbleToReturn)
+        if (_playerInput.Action && _abbleToReturn)
         {
             OnPlayerChangeShape(_playerEquipmentController.GetPlayerDefaultShapeData());
-            PlayerController.transform.position = _cOOPlayerReference.GetNearestAvailablePosition();
+            PlayerController.transform.position = PlayerController.COOPlayerReference.GetNearestAvailablePosition();
             _playerMotorController.UnFreezConstrains();
-            _inBuildingMode = false;
+            PlayerController.PlayerStateController.InBuildingMode = false;
             PlayerController.PlayerRigidbody.gravityScale = 8f;
             PlayerController.PlayerRigidbody.drag = 10f;
         }
