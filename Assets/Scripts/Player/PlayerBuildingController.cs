@@ -91,27 +91,19 @@ public class PlayerBuildingController : BaseController
                 OnPlayerChangeShape(_playerEquipmentController.GetPlayerShapeData(_index));
                 _changingShapeTimer = 0f;
             }
-        }
+        }     
 
-        //jump unless player state controller done
-        if (_playerInput.Jump)
-        {
-            _playerMotorController.FreezConstrains();
-            PlayerController.COOPlayerReference.PlayerStateController.InBuildingMode = false;
-            _abbleToReturn = true;
-        }
-
-        if (_playerInput.Action && _abbleToReturn)
+        if (_playerInput.Cancel)
         {
             OnPlayerChangeShape(_playerEquipmentController.GetPlayerDefaultShapeData());
             PlayerController.transform.position = PlayerController.COOPlayerReference.GetNearestAvailablePosition();
             _playerMotorController.UnFreezConstrains();
-            PlayerController.PlayerStateController.InBuildingMode = false;
             PlayerController.PlayerRigidbody.gravityScale = 8f;
             PlayerController.PlayerRigidbody.drag = 10f;
-        }
-
+        }  
 
     }
+
+
 
 }

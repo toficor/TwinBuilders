@@ -1,38 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerStateController : BaseController
 {
+    public Action OnPlayerEnterBuildingMode = delegate { };
+    public Action OnPlayerExitBuildingMode = delegate { };
+
+    public Action OnPlayerEnterWaitingMode = delegate { };
+    public Action OnPlayerExitWaitingMode = delegate { };
+
+    public Action OnPlayerEnterPlatformingMode = delegate { };
+    public Action OnPlayerExitPlatformingMode = delegate { };
+
+    public Action OnPlayerEnterAfterBuildingMode = delegate { };
+    public Action OnPlayerExitAfterBuilding = delegate { };
+
+    public Action<PlayerState> OnPlayerEnterAnyState;
+
     private Animator _playerStateMachine;
     private PlayerInput _playerInput;
-    private PlayerMotorController _playerMotorController;
     private PlayerState _currentPlayerState;
 
-    private bool _inBuildingMode = false;
-    private bool _waitingForSecondPlayer = false;
-
     private float _currentWaitingForBuildingTimer = 0f;
-    private bool _canEnterBuildingMode => _playerMotorController.OnGround && IsSecondPlayerNear() && PlayerController.COOPlayerReference.PlayerStateController.WaitingForSecondPlayer;
-    private bool _canEnterWaitingForBuilding => _playerMotorController.OnGround && _currentWaitingForBuildingTimer <= 0f;
-
-    public bool CanEnterBuildingMode => _canEnterBuildingMode;
-    public bool WaitingForSecondPlayer => _waitingForSecondPlayer;
-
-    public bool InBuildingMode
+    private bool _canEnterBuildingMode
     {
         get
         {
-            return _inBuildingMode;
-        }
 
-        set
-        {
-            _inBuildingMode = value;
+            //  Debug.LogError(PlayerController.COOPlayerReference.name + " waiting: " + PlayerController.COOPlayerReference.PlayerStateController.WaitingForSecondPlayer);
+
+            return PlayerController.PlayerMotorController.OnGround && IsSecondPlayerNear() && PlayerController.COOPlayerReference.PlayerStateController.WaitingForSecondPlayer;
         }
     }
+    private bool _canEnterWaitingForBuilding => PlayerController.PlayerMotorController.OnGround && _currentWaitingForBuildingTimer <= 0f;
 
+    public bool CanEnterBuildingMode => _canEnterBuildingMode;
+    public bool WaitingForSecondPlayer => GetCurrentPlayerState() == PlayerState.WaitingForAction;
 
+    public bool InBuildingMode => GetCurrentPlayerState() == PlayerState.Building;
+
+    public bool InAfterBuilingState => GetCurrentPlayerState() == PlayerState.AfterBuilding;
 
     public PlayerStateController(Animator playerStateMachine, PlayerController playerController
         , PlayerInput playerInput) : base(playerController)
@@ -48,6 +57,7 @@ public class PlayerStateController : BaseController
 
     public override BaseController Init()
     {
+        OnPlayerEnterAnyState += SetCurrentPLayerState;
         return this;
     }
 
@@ -63,40 +73,64 @@ public class PlayerStateController : BaseController
 
     protected override void OnUpdate()
     {
-        if (!_inBuildingMode)
+        switch (_currentPlayerState)
         {
-            //this should be moved to something like PlayerStateController class
-            if (_playerInput.Action)
-            {
-                if (_canEnterBuildingMode)
+            case PlayerState.Platforming:
+                if (_playerInput.Action && _canEnterWaitingForBuilding)
                 {
-                    Debug.LogWarning(PlayerController.gameObject.name + " Buduje");
-                    PlayerController.COOPlayerReference.PlayerStateController.InBuildingMode = true;
-                    _inBuildingMode = true;
-                }
-                else if (_canEnterWaitingForBuilding)
-                {
-                    Debug.LogWarning(PlayerController.gameObject.name + " Czekam");
-                    _waitingForSecondPlayer = true;
                     _currentWaitingForBuildingTimer = PlayerController.PlayerBuildingControllerData.WaitingForBuildingTimer;
+                    _playerStateMachine.SetTrigger("IsWaitingForAction");
                 }
-            }
+                break;
+            case PlayerState.WaitingForAction:
+                if (_playerInput.Action && _canEnterBuildingMode)
+                {
+                    _playerStateMachine.SetBool("IsBuilding", true);
+                }
+                if (_playerInput.Cancel)
+                {
+                    _currentWaitingForBuildingTimer = 0;
+                    _playerStateMachine.SetTrigger("EndWaitingForAction");
+                }
+                if (_currentWaitingForBuildingTimer <= 0f)
+                {
+                    _playerStateMachine.SetTrigger("EndWaitingForAction");
+                }
 
-        }        
+                float v = _currentWaitingForBuildingTimer -= Time.deltaTime;
+                _currentWaitingForBuildingTimer = Mathf.Clamp(v, 0, Mathf.Infinity);
 
-        if (_currentWaitingForBuildingTimer <= 0f && _waitingForSecondPlayer && !_inBuildingMode)
-        {
-            Debug.LogWarning(PlayerController.gameObject.name + " juz nie czekam");
-            _waitingForSecondPlayer = false;
-        }
+                break;
+            case PlayerState.Building:
+                if (_playerInput.Cancel)
+                {
+                    _playerStateMachine.SetBool("IsBuilding", false);
+                }
+                if (_playerInput.Action)
+                {
+                    _playerStateMachine.SetTrigger("AfterBuilding");
+                }
+                break;
+            case PlayerState.AfterBuilding:
+                if (_playerInput.Cancel)
+                {
+                    _playerStateMachine.SetBool("IsBuilding", false);
+                }
+                break;
+        }  
 
-        float v = _currentWaitingForBuildingTimer -= Time.deltaTime;
-        _currentWaitingForBuildingTimer = Mathf.Clamp(v, 0, Mathf.Infinity);
+    }
+
+    // ja wiem jak to wyglada, ale unity animator jest zjebany i trzeba to zrobic tak
+    public void SetCurrentPLayerState(PlayerState playerState)
+    {
+        Debug.LogWarning("ustawiam stan na " + playerState);
+        _currentPlayerState = playerState;
     }
 
     public PlayerState GetCurrentPlayerState()
     {
-        return _playerStateMachine.GetBehaviour<PlayerStateInfo>().PlayerState;
+        return _currentPlayerState;
     }
 }
 
@@ -104,5 +138,6 @@ public enum PlayerState
 {
     Platforming,
     WaitingForAction,
-    Building
+    Building,
+    AfterBuilding,
 }
