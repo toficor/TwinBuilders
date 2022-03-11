@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
                 _playerBuildingController.DeActivate();
                 _playerMotorController.Activate();
                 _playerMotorController.EnableMove();
+                _playerMotorController.UnFreezConstrains();
                 break;
             case PlayerState.WaitingForAction:
                 _playerMotorController.DeActivate();
@@ -73,16 +74,17 @@ public class PlayerController : MonoBehaviour
                 _playerBuildingController.Activate();
                 break;
             case PlayerState.AfterBuilding:
-                _playerMotorController.Activate();
                 // _playerBuildingController.DeActivate();
                 _playerBuildingController.DeActivate();
                 if (ImFirstPlayer)
                 {
+                    _playerMotorController.Activate();
                     _playerMotorController.EnableMove();
                 }
                 else
                 {
                     //tu bedzie aktywowanie controllera od jakis roznosci dla drugiego playera
+                    _playerMotorController.FreezConstrains();
                 }
                 break;
         }

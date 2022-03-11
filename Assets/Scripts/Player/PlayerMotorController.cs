@@ -178,11 +178,8 @@ public class PlayerMotorController : BaseController
 
     private void ResetMyPosition()
     {
-        Debug.LogError("previous: " + PlayerController.PlayerStateController.GetPreviousPlayerState() + " current: " + PlayerController.PlayerStateController.GetCurrentPlayerState());
-
         if (PlayerController.PlayerStateController.GetPreviousPlayerState() == PlayerState.Building || PlayerController.PlayerStateController.GetPreviousPlayerState() == PlayerState.AfterBuilding)
         {
-            Debug.LogError("siema");
             PlayerController.transform.position = PlayerController.COOPlayerReference.GetNearestAvailablePosition();
             UnFreezConstrains();
             PlayerController.PlayerRigidbody.gravityScale = 8f;
