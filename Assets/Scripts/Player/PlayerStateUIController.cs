@@ -39,6 +39,7 @@ public class PlayerStateUIController : BaseController
     {
         switch (playerState)
         {
+            case PlayerState.AfterBuilding:
             case PlayerState.Platforming:
                 _playerStateUISpriteRenderer.color = new Color(1, 1, 1, 0);
                 break;
@@ -49,7 +50,7 @@ public class PlayerStateUIController : BaseController
             case PlayerState.Building:
                 _playerStateUISpriteRenderer.color = new Color(1, 1, 1, 1);
                 _playerStateUISpriteRenderer.sprite = _playerStateUIData.BuildingSprite;
-                break;
+                break;          
         }
     }
 }

@@ -44,16 +44,21 @@ public class PlayerStateInfo : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        _playerController?.PlayerStateController.OnPlayerExitAnyState.Invoke(_playerState);
+
         switch (_playerState)
         {
             case PlayerState.Platforming:
                 _playerController?.PlayerStateController.OnPlayerExitPlatformingMode.Invoke();
                 break;
             case PlayerState.WaitingForAction:
-                _playerController?.PlayerStateController.OnPlayerExitPlatformingMode.Invoke();
+                _playerController?.PlayerStateController.OnPlayerExitWaitingMode.Invoke();
                 break;
             case PlayerState.Building:
-                _playerController?.PlayerStateController.OnPlayerExitPlatformingMode.Invoke();
+                _playerController?.PlayerStateController.OnPlayerExitBuildingMode.Invoke();
+                break;
+            case PlayerState.AfterBuilding:
+                _playerController?.PlayerStateController.OnPlayerExitAfterBuilding.Invoke();
                 break;
         }
     }

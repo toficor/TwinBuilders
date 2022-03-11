@@ -41,11 +41,19 @@ public class PlayerBuildingController : BaseController
 
     public override void DeInit()
     {
-        // throw new System.NotImplementedException();
+        if (!PlayerController.ImFirstPlayer)
+        {
+            PlayerController.PlayerStateController.OnPlayerEnterPlatformingMode -= ResetMyShape;           
+        }
     }
 
     public override BaseController Init()
     {
+        if (!PlayerController.ImFirstPlayer)
+        {
+            PlayerController.PlayerStateController.OnPlayerEnterPlatformingMode += ResetMyShape;
+        }
+
         return this;
     }
 
@@ -75,11 +83,10 @@ public class PlayerBuildingController : BaseController
     }
 
     int _index = 0;
-    bool _abbleToReturn = false;
     private void BuildingPlayerBehaviour()
     {
         PlayerController.PlayerRigidbody.gravityScale = 0f;
-        PlayerController.PlayerRigidbody.drag = 0f;
+      //  PlayerController.PlayerRigidbody.drag = 0f;
 
         _changingShapeTimer += Time.deltaTime;
 
@@ -91,19 +98,11 @@ public class PlayerBuildingController : BaseController
                 OnPlayerChangeShape(_playerEquipmentController.GetPlayerShapeData(_index));
                 _changingShapeTimer = 0f;
             }
-        }     
-
-        if (_playerInput.Cancel)
-        {
-            OnPlayerChangeShape(_playerEquipmentController.GetPlayerDefaultShapeData());
-            PlayerController.transform.position = PlayerController.COOPlayerReference.GetNearestAvailablePosition();
-            _playerMotorController.UnFreezConstrains();
-            PlayerController.PlayerRigidbody.gravityScale = 8f;
-            PlayerController.PlayerRigidbody.drag = 10f;
-        }  
-
+        }   
     }
 
-
-
+    private void ResetMyShape()
+    {
+        OnPlayerChangeShape(_playerEquipmentController.GetPlayerDefaultShapeData());
+    }    
 }

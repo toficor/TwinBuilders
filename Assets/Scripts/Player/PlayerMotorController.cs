@@ -56,11 +56,18 @@ public class PlayerMotorController : BaseController
 
     public override void DeInit()
     {
-        throw new NotImplementedException();
+        if (!PlayerController.ImFirstPlayer)
+        {
+            PlayerController.PlayerStateController.OnPlayerEnterPlatformingMode -= ResetMyPosition;
+        }
     }
 
     public override BaseController Init()
     {
+        if (!PlayerController.ImFirstPlayer)
+        {
+            PlayerController.PlayerStateController.OnPlayerEnterPlatformingMode += ResetMyPosition;
+        }
         return this;
     }
 
@@ -147,11 +154,14 @@ public class PlayerMotorController : BaseController
     public void DisableMove()
     {
         _canMove = false;
+        _rb.velocity = Vector2.zero;
+        FreezConstrains();
     }
 
     public void EnableMove()
     {
         _canMove = true;
+        UnFreezConstrains();
     }
     private Vector2 GetInput()
     {
@@ -163,6 +173,20 @@ public class PlayerMotorController : BaseController
         if (Mathf.Abs(_rb.velocity.x) > _playerMovementData.MaxMoveSpeed)
         {
             _rb.velocity = new Vector2(Mathf.Sign(_rb.velocity.x) * _playerMovementData.MaxMoveSpeed, _rb.velocity.y);
+        }
+    }
+
+    private void ResetMyPosition()
+    {
+        Debug.LogError("previous: " + PlayerController.PlayerStateController.GetPreviousPlayerState() + " current: " + PlayerController.PlayerStateController.GetCurrentPlayerState());
+
+        if (PlayerController.PlayerStateController.GetPreviousPlayerState() == PlayerState.Building || PlayerController.PlayerStateController.GetPreviousPlayerState() == PlayerState.AfterBuilding)
+        {
+            Debug.LogError("siema");
+            PlayerController.transform.position = PlayerController.COOPlayerReference.GetNearestAvailablePosition();
+            UnFreezConstrains();
+            PlayerController.PlayerRigidbody.gravityScale = 8f;
+            PlayerController.PlayerRigidbody.drag = 10f;
         }
     }
 

@@ -18,10 +18,12 @@ public class PlayerStateController : BaseController
     public Action OnPlayerExitAfterBuilding = delegate { };
 
     public Action<PlayerState> OnPlayerEnterAnyState;
+    public Action<PlayerState> OnPlayerExitAnyState;
 
-    private Animator _playerStateMachine;
+    public Animator PlayerStateMachine { get; private set; }
     private PlayerInput _playerInput;
     private PlayerState _currentPlayerState;
+    private PlayerState _previousPlayerState;
 
     private float _currentWaitingForBuildingTimer = 0f;
     private bool _canEnterBuildingMode
@@ -46,7 +48,7 @@ public class PlayerStateController : BaseController
     public PlayerStateController(Animator playerStateMachine, PlayerController playerController
         , PlayerInput playerInput) : base(playerController)
     {
-        _playerStateMachine = playerStateMachine;
+        PlayerStateMachine = playerStateMachine;
         _playerInput = playerInput;
     }
 
@@ -58,6 +60,7 @@ public class PlayerStateController : BaseController
     public override BaseController Init()
     {
         OnPlayerEnterAnyState += SetCurrentPLayerState;
+        OnPlayerExitAnyState += SetPreviousPlayerState;
         return this;
     }
 
@@ -76,25 +79,27 @@ public class PlayerStateController : BaseController
         switch (_currentPlayerState)
         {
             case PlayerState.Platforming:
+                _currentWaitingForBuildingTimer = 0;
                 if (_playerInput.Action && _canEnterWaitingForBuilding)
                 {
                     _currentWaitingForBuildingTimer = PlayerController.PlayerBuildingControllerData.WaitingForBuildingTimer;
-                    _playerStateMachine.SetTrigger("IsWaitingForAction");
+                    PlayerStateMachine.SetTrigger("IsWaitingForAction");
                 }
                 break;
             case PlayerState.WaitingForAction:
                 if (_playerInput.Action && _canEnterBuildingMode)
                 {
-                    _playerStateMachine.SetBool("IsBuilding", true);
+                    PlayerStateMachine.SetBool("IsBuilding", true);
+                    PlayerController.COOPlayerReference.PlayerStateController.PlayerStateMachine.SetBool("IsBuilding", true);
                 }
                 if (_playerInput.Cancel)
                 {
                     _currentWaitingForBuildingTimer = 0;
-                    _playerStateMachine.SetTrigger("EndWaitingForAction");
+                    PlayerStateMachine.SetTrigger("EndWaitingForAction");
                 }
                 if (_currentWaitingForBuildingTimer <= 0f)
                 {
-                    _playerStateMachine.SetTrigger("EndWaitingForAction");
+                    PlayerStateMachine.SetTrigger("EndWaitingForAction");
                 }
 
                 float v = _currentWaitingForBuildingTimer -= Time.deltaTime;
@@ -104,33 +109,48 @@ public class PlayerStateController : BaseController
             case PlayerState.Building:
                 if (_playerInput.Cancel)
                 {
-                    _playerStateMachine.SetBool("IsBuilding", false);
+                    PlayerController.COOPlayerReference.PlayerStateController.PlayerStateMachine.SetBool("IsBuilding", false);
+                    PlayerStateMachine.SetBool("IsBuilding", false);
+                    _currentWaitingForBuildingTimer = 0f;
                 }
                 if (_playerInput.Action)
                 {
-                    _playerStateMachine.SetTrigger("AfterBuilding");
+                    PlayerStateMachine.SetTrigger("AfterBuilding");
+                    PlayerController.COOPlayerReference.PlayerStateController.PlayerStateMachine.SetTrigger("AfterBuilding");
                 }
                 break;
             case PlayerState.AfterBuilding:
                 if (_playerInput.Cancel)
                 {
-                    _playerStateMachine.SetBool("IsBuilding", false);
+                    PlayerController.COOPlayerReference.PlayerStateController.PlayerStateMachine.SetBool("IsBuilding", false);
+                    PlayerStateMachine.SetBool("IsBuilding", false);
+                    _currentWaitingForBuildingTimer = 0f;
                 }
                 break;
-        }  
+        }
 
     }
 
     // ja wiem jak to wyglada, ale unity animator jest zjebany i trzeba to zrobic tak
     public void SetCurrentPLayerState(PlayerState playerState)
     {
-        Debug.LogWarning("ustawiam stan na " + playerState);
+        Debug.LogWarning(PlayerController.name + " ustawiam stan na " + playerState);
         _currentPlayerState = playerState;
     }
 
     public PlayerState GetCurrentPlayerState()
     {
         return _currentPlayerState;
+    }
+
+    public void SetPreviousPlayerState(PlayerState playerState)
+    {
+        _previousPlayerState = playerState;
+    }
+
+    public PlayerState GetPreviousPlayerState()
+    {
+        return _previousPlayerState;
     }
 }
 

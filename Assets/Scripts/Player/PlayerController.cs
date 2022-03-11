@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Platforming:
                 _playerBuildingController.DeActivate();
                 _playerMotorController.Activate();
+                _playerMotorController.EnableMove();
                 break;
             case PlayerState.WaitingForAction:
                 _playerMotorController.DeActivate();
@@ -73,7 +74,16 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.AfterBuilding:
                 _playerMotorController.Activate();
+                // _playerBuildingController.DeActivate();
                 _playerBuildingController.DeActivate();
+                if (ImFirstPlayer)
+                {
+                    _playerMotorController.EnableMove();
+                }
+                else
+                {
+                    //tu bedzie aktywowanie controllera od jakis roznosci dla drugiego playera
+                }
                 break;
         }
 
